@@ -1,0 +1,344 @@
+/* --------- General ----------- */
+*
+{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,body
+{
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: monospace, Arial, Helvetica, sans-serif;
+}
+
+button
+{
+  cursor: pointer;
+}
+
+
+/* ---------------home page style ------------- */
+
+#home_page_container
+{
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#home_page_header
+{
+  height: 15%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+#home_page_main
+{
+  height: 85%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#title
+{
+  color: purple;
+  font-size: 4em;
+  text-transform: uppercase;
+  font-style: italic;
+  font-weight: 800;
+  text-shadow: 2px 2px black;
+}
+
+#to_optionBtn_container
+{
+  width: 40%;
+  height: 40%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 7em;
+}
+
+
+.hpOptionsBtns
+{
+  width: 250px;
+  height: 4rem;
+  padding: 15px 15px;
+  color: white;
+  background-color: purple;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid black;
+  font-weight:bold;
+  cursor: pointer;
+  box-shadow: 3px 3px 5px black;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.hpOptionsBtns:hover
+{
+  box-shadow: 3px 3px 5px 3px black;
+}
+
+.action_containers
+{
+  width: 30%;
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 7em;
+}
+
+.action_inputs
+{
+  width: 80%;
+  height: 35%;
+  font-size: 1.2em;
+  font-weight: bold;
+  border: 3px solid black;
+  color: purple;
+  padding: 5px;
+}
+
+.btn_container
+{
+  width: 100%;
+  height: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.back_btns
+{
+  width: 20%;
+  height: 100%;
+  padding: 5px 5px;
+  color: white;
+  background-color: purple;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid black;
+  font-weight:bold;
+  cursor: pointer;
+  box-shadow: 3px 3px 5px black;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.action_btns
+{
+  width: 70%;
+  height: 100%;
+  padding: 5px 5px;
+  color: white;
+  background-color: purple;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid black;
+  font-weight:bold;
+  cursor: pointer;
+  box-shadow: 3px 3px 5px black;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.action_btns:hover
+{
+  box-shadow: 3px 3px 5px 3px black;
+}
+
+.back_btns:hover
+{
+  box-shadow: 3px 3px 5px 3px black;
+}
+
+/* ----------------- ---------------------------------- */
+/* --------------- video page style ------------------- */
+
+#video_page_container
+{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  overflow:hidden;
+}
+
+#left_side_vp
+{
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1.5px solid black;
+}
+
+#right_side_vp
+{
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-left: 1.5px solid black;
+}
+
+.video_users
+{
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+#second_user
+{
+  border-bottom: 3px solid black;
+}
+
+#info_box
+{
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#chat_box
+{
+  height: 80%;
+  width: 100%;
+  padding: 10px;
+  border-top: 2px solid black;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+}
+
+#chat_box div
+{
+  padding: 10px;
+  background-color: purple;
+  border: 1px solid black;
+  font-weight:bold;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  display: inline-block;
+}
+
+#chat_box p
+{
+  margin: auto;
+  font-size: 1.4em;
+  color: white;
+  letter-spacing: 0.2em;
+  font-weight:bold;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+}
+
+#chat_input_container
+{
+  height: 10%;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding: 1px;
+}
+
+#chat_input_container input
+{
+  width: 80%;
+  height: 100%;
+  font-size: 1.2em;
+  font-weight: bold;
+  border: 3px solid black;
+  color: purple;
+  padding: 5px;
+}
+
+#chat_input_container button
+{
+  width: 20%;
+  height: 100%;
+  padding: 5px;
+  color: white;
+  background-color: purple;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid black;
+  font-weight:bold;
+  cursor: pointer;
+  box-shadow: 2px 2px 3px 3px black;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+#chat_input_container button:hover
+{
+  box-shadow: 2px 2px 3px black;
+}
+
+#exit_btn
+{
+  width: 20%;
+  height: 70%;
+  padding: 2px;
+  color: white;
+  background-color: purple;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid black;
+  font-weight:bold;
+  cursor: pointer;
+  box-shadow: 1px 1px 2px 2px black;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+#exit_btn:hover
+{
+  box-shadow: 1px 1px 1px black;
+}
+
+#room_info
+{
+  color: purple;
+  font-size: 2em;
+  text-transform: uppercase;
+  font-style: italic;
+  font-weight: 800;
+  text-shadow: 2px 2px black;
+}
+
+/* ---------------- video ----------------- */
+
+video
+{
+  height: 100%;
+  width: 100%;
+}

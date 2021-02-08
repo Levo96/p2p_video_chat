@@ -2,8 +2,7 @@
   let constraints = {video: true, audio: true};
   let roomLog = {};
   // -------------------- HOME PAGE --------------------
-  let socket = io("/");
-  //https://videoroomp2p.herokuapp.com/
+  let socket = io("https://videoroomp2p.herokuapp.com/");
   let localPeer = new Peer();
 
   localPeer.on('open', (id)=> {

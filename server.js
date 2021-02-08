@@ -1,17 +1,15 @@
 require('dotenv').config();
 const express = require('express');
-const session = require('express-session');
-const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 const http = require("http").createServer(app);
 const io = require('socket.io')(http);
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.route('/').get((req, res)=> {
+app.route('*').get((req, res)=> {
   res.sendFile(__dirname + '/views/index.html');
 });
 

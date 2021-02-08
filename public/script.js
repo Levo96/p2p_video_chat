@@ -6,11 +6,7 @@ window.onload = () =>
   // -------------------- home page --------------------
   let socket = io("https://calm-waters-09877.herokuapp.com/");
 
-  let localPeer = new Peer(undefined, {
-    secure: true,
-    host: 'localpeerjsserver.herokuapp.com',
-    port: 1801
-  });
+  let localPeer = new Peer();
 
   localPeer.on('open', (id)=> {
     peerID = id;

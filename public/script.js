@@ -4,7 +4,7 @@ window.onload = () =>
   let peerID = "";
   let roomLog = {};
   // -------------------- home page --------------------
-  let socket = io("https://videoroomsp2p.herokuapp.com/");
+  let socket = io("https://videoroomp2p.herokuapp.com/");
 
   let localPeer = new Peer();
 

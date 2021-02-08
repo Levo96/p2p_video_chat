@@ -1,7 +1,5 @@
-window.onload = () =>
-{
+
   let constraints = {video: true, audio: true};
-  let peerID = "";
   let roomLog = {};
   // -------------------- home page --------------------
   let socket = io("https://videoroomp2p.herokuapp.com/");
@@ -30,31 +28,28 @@ window.onload = () =>
   let video_container = document.getElementById("video_page_container");
   let video_element = document.createElement("video");
   video_element.muted = true;
-  let vid_div = document.getElementById("first_user");
-  let vid_div2 = document.getElementById("second_user");
-
-  const addVideo = (video, stream) =>
-    {
+  //let vid_div = document.getElementById("first_user");
+  //let vid_div2 = document.getElementById("second_user");
+/* -------------------- funcs --------------- */
+  let addVideo = (video, stream) =>
+  {
       video.srcObject = stream;
       video.addEventListener('loadedmetadata', ()=> {
         video.play();
       });
-      $(vid_div).append($(video));
-  }
-
-  const addRemoteVideo = (video, stream) =>
-  {
-    video.srcObject = stream;
-    video.addEventListener('loadedmetadata', ()=> {
-      video.play();
-    });
-    $(vid_div2).append($(video));
+      $('#left_side_vp').prepend($(video));
   }
 
   let hasGetUserMedia = () =>
   {
     return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
   }
+
+
+
+
+/* -------------------------------------------------*/
+
   //navigation -------------------
   $(createRoomContainer).hide();
   $(joinRoomContainer).hide();
@@ -79,81 +74,45 @@ window.onload = () =>
     $(joinRoomContainer).hide();
     $(optionBtnsContainer).fadeIn();
   });
-  /* -------------------------------------------- */
+  /* ------------------Sending Input-------------------------- */
   $(createRoomBtn).on('click', ()=> {
-    let roomName;
     if($('#createRoom_roomname').val() != "")
     {
-      roomName =  $('#createRoom_roomname').val();
+      let roomName =  $('#createRoom_roomname').val();
+      roomName = String(roomName);
       if(peerID == ""){peerID=""}
-      socket.emit('createRoom',{roomName: roomName, userID: peerID});
+      socket.emit('createRoom',{roomName: roomName, peerID: peerID});
       $('#createRoom_roomname').val("");
     }
   });
 
   $(joinRoomBtn).on('click', ()=> {
-    let roomName;
     if($("#joinRoom_roomname").val() != "")
     {
-      roomName = $("#joinRoom_roomname").val();
+      let roomName = $("#joinRoom_roomname").val();
+      roomName = String(roomName);
       if(peerID == ""){peerID = ""}
-      socket.emit('enterRoom', {roomName: roomName, userID: peerID});
+      socket.emit('enterRoom', {roomName: roomName, peerID: peerID});
       $("#joinRoom_roomname").val("");
     }
   });
-  /*------------------------------------------------- */
+  /*------------------ Handling Input ------------------------------ */
   socket.on("userJoined", data => {
     $(homePageContainer).hide();
     $(video_container).fadeIn();
-    roomLog["name"] = data["name"];
-    roomLog["roomUserInfo"] = data["roomUserInfo"];
-    $("#room_info").text(`room: ${roomLog["name"]}`);
+    let roomName = data["roomName"];
+    roomLog["roomName"] = roomName;
+    roomLog["usersOBJ"] = data["roomLog"];
+    $("#room_info").text(`room: ${roomName}`);
     $("#chat_box").append(`<div><p>user joined room</p></div>`);
-
-    if(data["user"] == 1)
-    {
-      if(hasGetUserMedia())
-      {
-        navigator.mediaDevices.getUserMedia(constraints).then((stream)=>{
-          addVideo(video_element, stream);
-          localPeer.on('call', call => {
-            call.answer(stream);
-            let video = document.createElement("video");
-            call.on('stream', remoteStream => {
-              addRemoteVideo(video, remoteStream);
-            })
-          })
-        });
-      }
-    }
-
-  });
-
-  socket.on('userTwoConnected', (userID) => {
-    let tmp_id = userID;
-    console.log(tmp_id);
-    if(hasGetUserMedia())
-    {
-      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-        addVideo(video_element, stream);
-        let video = document.createElement("video");
-        let call = localPeer.call(tmp_id, stream);
-        call.on('stream', remoteStream => {
-          addRemoteVideo(video, remoteStream);
-        })
-        call.on('close', () => {
-          video.remove();
-        });
-        peers[tmp_id] = call;
-      });
-    }
   });
 
   $(sendBtn).on('click', ()=> {
     if($(message_input_element).val() != "")
     {
       let message = $(message_input_element).val();
-      socket.emit("textMessage", {roomName: roomLog["name"], message: message});
+      message = String(message);
+      socket.emit("textMessage", {roomName: roomLog["roomName"], message: message});
       $(message_input_element).val("");
     }
   });
@@ -174,7 +133,8 @@ window.onload = () =>
   socket.on("room is full", ()=> {
     alert("room full");
   });
-  //---------------------------------------------------------
+
+  //----------Exit and Error -------------------------------
   $(exitBtn).on('click', ()=> {
     socket.emit('leaving', roomLog["name"]);
   });
@@ -189,4 +149,43 @@ window.onload = () =>
     $(homePageContainer).fadeIn();
   });
 
-}//---end
+  // ------------------------ video ---------------------------
+  socket.on("readyForCall", ()=> {
+    if(hasGetUserMedia())
+    {
+      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        addVideo(video_element, stream);
+
+        localPeer.on('call', call => {
+          call.answer(stream);
+          const video = document.createElement('video');
+          call.on('stream', remoteStream => {
+            addVideo(video, remoteStream);
+          });
+          call.on('close' , ()=> {
+            video.remove();
+          });
+        });
+      });
+    }
+  });
+
+
+
+  socket.on("callUserOne", data => {
+    console.log(data);
+    if(hasGetUserMedia())
+    {
+      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        addVideo(video_element, stream);
+        const call = localPeer.call(data, stream);
+        const video = document.createElement('video');
+        call.on('stream', remoteStream => {
+          addVideo(video, remoteStream);
+        });
+        call.on('close' , ()=> {
+          video.remove();
+        });
+      });
+    }
+  });

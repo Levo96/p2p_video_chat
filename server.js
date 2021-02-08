@@ -13,26 +13,28 @@ app.route('*').get((req, res)=> {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-let users = 0;
 let roomLog = {};
-
 
 io.on('connection', socket => {
 
   socket.on('createRoom', (data) => {
     let roomName = data["roomName"];
-    socket.rooms = roomName;
+    let peerID = data["peerID"];
+    let socketID = socket.id;
+
+    roomLog[roomName] = {peerIDs:[peerID], socketIDs: [socketID]};
     socket.join(roomName);
-    let socketUserID_ojb = {"user1" : socket.id};
-    roomLog[roomName] = {userCount: 1, userIDs: [data["userID"]], socketIDs: [socketUserID_ojb]};
-    io.in(roomName).emit("userJoined", {name: roomName, roomUserInfo: roomLog[roomName], user: 1});
+    io.in(roomName).emit("userJoined", {roomName: roomName, roomLog: roomLog[roomName]});
+    io.in(roomName).emit("readyForCall");
   });
 
   socket.on('enterRoom', data => {
     let roomName = data["roomName"];
-    let room = io.sockets.adapter.rooms.get(roomName);
+    let peerID = data["peerID"];
+    let socketID = socket.id;
+    let socket_room_obj = io.sockets.adapter.rooms.get(roomName);
     let clients = 0;
-    if(room)
+    if(socket_room_obj)
     {
       clients = io.sockets.adapter.rooms.get(roomName).size;
       if(clients == 0)
@@ -47,13 +49,11 @@ io.on('connection', socket => {
       }
       else
       {
+        roomLog[roomName]["peerIDs"].push(peerID);
+        roomLog[roomName]["socketIDs"].push(socketID);
         socket.join(roomName);
-        //roomLog[roomName] = {userCount: 1, userIDs: [socket.id]};
-        roomLog[roomName]["userCount"] += 1;
-        roomLog[roomName]["socketIDs"][0]["user2"] = socket.id;
-        roomLog[roomName]["userIDs"].push(data["userID"]);
-        io.in(roomName).emit("userJoined",{name: roomName, roomUserInfo: roomLog[roomName]});
-        io.in(roomName).emit("userTwoConnected", roomLog[roomName]["userIDs"][0]);
+        io.in(roomName).emit("userJoined", {roomName: roomName, roomLog: roomLog[roomName]});
+        io.in(roomName).emit("callUserOne", roomLog[roomName]["peerIDs"][0]);
       }
     }
     else
@@ -69,14 +69,7 @@ io.on('connection', socket => {
     io.in(roomName).emit("message", message);
   });
 
-  socket.on("leaving", (data)=> {
-    console.log(roomLog);
-    let roomName = data;
-    io.in(roomName).emit("user_left");
-    roomLog[roomName]["userCount"] -= 1;
-    socket.emit('cleanUpPage');
-    socket.leave(roomName);
-  });
+
 });//end of connection
 
 let port = process.env.PORT || 5000;

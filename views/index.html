@@ -9,7 +9,7 @@
   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js" integrity="sha512-oFOCo2/3DtjrJG4N27BjSLQWoiBv171sK6a+JiWjp/7agxC2nCUP358AqzxkBUb5jX8g6CYLPdSKQTbC0weCwA==" crossorigin="anonymous"></script> -->
   <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script>
   <script src="/socket.io/socket.io.js" defer ></script>
-  <script defer src="script.js"></script>
+  <script defer src="script.js" defer ></script>
 </head>
 <body>
 
@@ -46,28 +46,33 @@
 
   <div id="video_page_container">
 
-    <div id="left_side_vp">
 
+    <div id="left_side_vp">
+      <!--
       <div id="second_user" class="video_users">
 
       </div>
 
       <div id="first_user" class="video_users">
-
+      -->
       </div>
+
+      <div id="right_side_vp">
+        <div id="info_box">
+          <h2 id="room_info"></h2> <button id="exit_btn">exit</button>
+        </div>
+        <div id="chat_box">
+        </div>
+        <div id="chat_input_container">
+          <input type="text" id="chat_input" name="chat_input"/><button type="button" id="sendBtn">send</button>
+        </div>
+      </div>
+
+
 
     </div>
 
-    <div id="right_side_vp">
-      <div id="info_box">
-        <h2 id="room_info"></h2> <button id="exit_btn">exit</button>
-      </div>
-      <div id="chat_box">
-      </div>
-      <div id="chat_input_container">
-        <input type="text" id="chat_input" name="chat_input"/><button type="button" id="sendBtn">send</button>
-      </div>
-    </div>
+
 
 
   </div>

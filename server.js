@@ -69,6 +69,29 @@ io.on('connection', socket => {
     io.in(roomName).emit("message", message);
   });
 
+  socket.on("leaving", data => {
+    let roomName = data;
+    let currentSocket = socket.id;
+    let indexOfCurrentSocket = roomLog[roomName]["socketIDs"].indexOf(currentSocket);
+    if(indexOfCurrentSocket == 0)
+    {
+      roomLog[roomName]["socketIDs"].shift();
+      roomLog[roomName]["peerIDs"].shift();
+    }
+    if(indexOfCurrentSocket == 1)
+    {
+      roomLog[roomName]["socketIDs"].pop();
+      roomLog[roomName]["peerIDs"].pop();
+    }
+    socket.emit("cleanUpPage");
+    socket.leave(roomName);
+    io.in(roomName).emit("userLeftRoom",{roomName: roomName, roomLog: roomLog[roomName]});
+  });
+
+  socket.on("reDirectUser", (data)=> {
+    let roomName = data;
+    io.in(roomName).emit("readyForCall");
+  });
 
 });//end of connection
 

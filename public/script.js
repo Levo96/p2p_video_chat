@@ -1,9 +1,9 @@
 
   let constraints = {video: true, audio: true};
   let roomLog = {};
-  // -------------------- home page --------------------
-  let socket = io("https://videoroomp2p.herokuapp.com/");
-
+  // -------------------- HOME PAGE --------------------
+  let socket = io("/");
+  //https://videoroomp2p.herokuapp.com/
   let localPeer = new Peer();
 
   localPeer.on('open', (id)=> {
@@ -28,9 +28,9 @@
   let video_container = document.getElementById("video_page_container");
   let video_element = document.createElement("video");
   video_element.muted = true;
-  //let vid_div = document.getElementById("first_user");
-  //let vid_div2 = document.getElementById("second_user");
-/* -------------------- funcs --------------- */
+
+/* -------------------- FUNCS --------------- -------*/
+
   let addVideo = (video, stream) =>
   {
       video.srcObject = stream;
@@ -45,12 +45,9 @@
     return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
   }
 
-
-
-
 /* -------------------------------------------------*/
 
-  //navigation -------------------
+  //--------navigation -------------------
   $(createRoomContainer).hide();
   $(joinRoomContainer).hide();
   $(video_container).hide();
@@ -136,7 +133,10 @@
 
   //----------Exit and Error -------------------------------
   $(exitBtn).on('click', ()=> {
-    socket.emit('leaving', roomLog["name"]);
+    console.log("exiting User Stats");
+    console.log(roomLog["roomName"], roomLog["usersOBJ"]);
+    socket.emit('leaving', roomLog["roomName"]);
+    localPeer.close();
   });
 
   socket.on("user_left", ()=> {
@@ -151,6 +151,7 @@
 
   // ------------------------ video ---------------------------
   socket.on("readyForCall", ()=> {
+    $('#left_side_vp').empty();
     if(hasGetUserMedia())
     {
       navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
@@ -173,7 +174,6 @@
 
 
   socket.on("callUserOne", data => {
-    console.log(data);
     if(hasGetUserMedia())
     {
       navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
@@ -188,4 +188,12 @@
         });
       });
     }
+  });
+
+
+  socket.on("userLeftRoom", data => {
+    roomLog["roomName"] = data["roomName"];
+    roomLog["usersOBJ"] = data["roomLog"];
+    $("#chat_box").append(`<div><p>user left room</p></div>`);
+    socket.emit("reDirectUser", roomLog["roomName"]);
   });

@@ -81,6 +81,8 @@ io.on('connection', socket => {
   });
 });//end of connection
 
-http.listen(3000, ()=> {
-  console.log('Listening on port: ' + 3000);
+let port = process.env.PORT || 5000;
+
+http.listen(port, ()=> {
+  console.log('Listening on port: ' + port);
 });

@@ -4,13 +4,12 @@ window.onload = () =>
   let peerID = "";
   let roomLog = {};
   // -------------------- home page --------------------
-  let socket = io("/");
+  let socket = io("https://calm-waters-09877.herokuapp.com/");
 
   let localPeer = new Peer(undefined, {
-    secure: true
+    secure: true,
     host: 'localpeerjsserver.herokuapp.com',
-    port: 1801,
-
+    port: 1801
   });
 
   localPeer.on('open', (id)=> {
@@ -121,7 +120,6 @@ window.onload = () =>
       {
         navigator.mediaDevices.getUserMedia(constraints).then((stream)=>{
           addVideo(video_element, stream);
-
           localPeer.on('call', call => {
             call.answer(stream);
             let video = document.createElement("video");
@@ -182,7 +180,6 @@ window.onload = () =>
   });
   //---------------------------------------------------------
   $(exitBtn).on('click', ()=> {
-    console.log("exit button clicked + " + roomLog["name"]);
     socket.emit('leaving', roomLog["name"]);
   });
 

@@ -19,6 +19,13 @@ io.on('connection', socket => {
 
   socket.on('createRoom', (data) => {
     let roomName = data["roomName"];
+
+    if(roomLog[roomName])
+    {
+      socket.emit("roomExists", roomName);
+      return;
+    }
+
     let peerID = data["peerID"];
     let socketID = socket.id;
 

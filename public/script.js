@@ -130,6 +130,10 @@
     alert("room full");
   });
 
+  socket.on("roomExists", (data)=> {
+    alert("room name " + data + " already in use choose an other room name");
+  });
+
   //----------Exit and Error -------------------------------
   $(exitBtn).on('click', ()=> {
     console.log("exiting User Stats");

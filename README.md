@@ -8,7 +8,7 @@ made with:
 
 Note: 
   * enable cam and microphone
-  * works only with firefox and google chrome browser (only PC)
+  * works only with firefox and maybe with google chrome browser (ONLY PC ! ! !)
 
 view:  (https://videoroomp2p.herokuapp.com/)
 
